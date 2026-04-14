@@ -1,731 +1,416 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Veld — The Global Field Hockey Platform</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Veld — The Global Field Hockey Platform</title>
+  <meta name="description" content="Connect with clubs, manage your squad, track stats, and find opportunities — all in one place built for field hockey." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --green-dark: #0F3D24;
-    --green: #1A5C38;
-    --green-mid: #2D7A50;
-    --green-light: #4CAF7D;
-    --lime: #A8E063;
-    --white: #F7FAF5;
-    --off-white: #EEF4EB;
-    --gray: #8A9E8F;
-    --dark: #0A1F12;
-  }
+    :root {
+      --bg: #0a1a0f;
+      --bg2: #0d2014;
+      --green: #a8f060;
+      --green-dim: #6db83a;
+      --text: #e8f5e0;
+      --muted: #7a9e7a;
+      --card: #0f2416;
+      --border: rgba(168,240,96,0.12);
+    }
 
-  html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--dark);
-    color: var(--white);
-    overflow-x: hidden;
-  }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  /* ─── NOISE OVERLAY ─── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.4;
-  }
+    a { color: inherit; text-decoration: none; }
 
-  /* ─── NAV ─── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 20px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(to bottom, rgba(10,31,18,0.95), transparent);
-    backdrop-filter: blur(2px);
-  }
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: rgba(10, 26, 15, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav img { height: 28px; }
+    .btn-nav {
+      background: var(--green);
+      color: #0a1a0f;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 100px;
+      transition: opacity 0.2s;
+    }
+    .btn-nav:hover { opacity: 0.85; }
 
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-  }
+    /* HERO */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+    }
+    .hero-logo { height: 64px; margin-bottom: 32px; }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 14vw, 100px);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .hero h1 span { color: var(--green); }
+    .hero-sub {
+      font-size: clamp(15px, 3vw, 18px);
+      color: var(--muted);
+      max-width: 520px;
+      margin: 20px auto 36px;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--green);
+      color: #0a1a0f;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 16px 36px;
+      border-radius: 100px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+    .hero-tagline {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
 
-  .nav-logo svg { height: 32px; width: auto; }
+    /* PILLS */
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 24px 64px;
+    }
+    .pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-  .nav-cta {
-    background: var(--lime);
-    color: var(--dark);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 10px 22px;
-    border-radius: 100px;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.2s, background 0.2s;
-    letter-spacing: 0.3px;
-  }
-  .nav-cta:hover { transform: scale(1.04); background: #bfef7a; }
+    /* SECTION LABEL */
+    .section-label {
+      text-align: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 8vw, 64px);
+      letter-spacing: 0.04em;
+      color: var(--text);
+      padding: 0 24px;
+      margin-bottom: 48px;
+    }
+    .section-label em {
+      font-style: normal;
+      color: var(--green);
+    }
 
-  /* ─── HERO ─── */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 120px 24px 80px;
-    position: relative;
-    overflow: hidden;
-  }
+    /* FEATURES GRID */
+    .features {
+      padding: 72px 24px;
+      background: var(--bg2);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .card:hover { border-color: var(--green-dim); transform: translateY(-3px); }
+    .card-icon { font-size: 28px; margin-bottom: 12px; }
+    .card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    .card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
 
-  /* Pitch lines background */
-  .hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 110%, rgba(26,92,56,0.5) 0%, transparent 70%),
-      radial-gradient(circle 1px at 50% 50%, rgba(168,224,99,0.15) 0%, transparent 100%);
-    pointer-events: none;
-  }
+    /* STATS */
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0;
+      padding: 56px 24px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat {
+      flex: 1;
+      min-width: 160px;
+      text-align: center;
+      padding: 24px 16px;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      color: var(--green);
+      line-height: 1;
+    }
+    .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
 
-  .pitch-svg {
-    position: absolute;
-    bottom: -10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(700px, 100%);
-    opacity: 0.08;
-    pointer-events: none;
-  }
+    /* ROLES */
+    .roles { padding: 72px 24px; }
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .role-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 24px;
+    }
+    .role-icon { font-size: 36px; margin-bottom: 16px; }
+    .role-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .role-card ul { list-style: none; }
+    .role-card ul li {
+      font-size: 14px;
+      color: var(--muted);
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .role-card ul li::before { content: '→'; color: var(--green); font-size: 12px; }
+    .role-card ul li:last-child { border-bottom: none; }
+    .badge-free {
+      display: inline-block;
+      margin-top: 16px;
+      background: rgba(168,240,96,0.12);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+    }
 
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(168,224,99,0.12);
-    border: 1px solid rgba(168,224,99,0.3);
-    border-radius: 100px;
-    padding: 6px 16px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--lime);
-    margin-bottom: 28px;
-    letter-spacing: 0.5px;
-    animation: fadeUp 0.8s ease both;
-  }
+    /* CTA */
+    .cta {
+      text-align: center;
+      padding: 80px 24px;
+      background: var(--bg2);
+    }
+    .cta h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 8vw, 72px);
+      line-height: 1;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+    .cta h2 em { font-style: italic; color: var(--green); }
+    .cta p { color: var(--muted); font-size: 15px; margin-bottom: 32px; }
+    .cta-note { margin-top: 16px; font-size: 12px; color: var(--muted); }
 
-  .hero-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--lime);
-    border-radius: 50%;
-    animation: pulse 2s ease infinite;
-  }
+    /* FOOTER */
+    footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    footer img { height: 20px; opacity: 0.6; }
+    footer p { font-size: 12px; color: var(--muted); }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
-
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(72px, 14vw, 160px);
-    line-height: 0.9;
-    letter-spacing: 4px;
-    color: var(--white);
-    animation: fadeUp 0.8s 0.1s ease both;
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-title span {
-    color: var(--lime);
-    display: block;
-  }
-
-  .hero-sub {
-    font-size: clamp(16px, 2.5vw, 20px);
-    color: var(--gray);
-    max-width: 480px;
-    line-height: 1.6;
-    margin: 20px auto 40px;
-    font-weight: 300;
-    animation: fadeUp 0.8s 0.2s ease both;
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    animation: fadeUp 0.8s 0.3s ease both;
-    position: relative;
-    z-index: 1;
-  }
-
-  .btn-primary {
-    background: var(--lime);
-    color: var(--dark);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 17px;
-    padding: 16px 40px;
-    border-radius: 100px;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    letter-spacing: 0.3px;
-    box-shadow: 0 0 40px rgba(168,224,99,0.25);
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 8px 50px rgba(168,224,99,0.4);
-  }
-
-  .hero-note {
-    font-size: 13px;
-    color: var(--gray);
-    margin-top: 4px;
-  }
-
-  /* ─── ROLES STRIP ─── */
-  .roles-strip {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding: 0 24px 80px;
-    animation: fadeUp 0.8s 0.4s ease both;
-  }
-
-  .role-pill {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 100px;
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--white);
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .role-pill:hover {
-    border-color: rgba(168,224,99,0.4);
-    background: rgba(168,224,99,0.06);
-  }
-  .role-pill span { font-size: 18px; }
-
-  /* ─── FEATURES ─── */
-  .section {
-    padding: 80px 24px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .section-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--lime);
-    margin-bottom: 16px;
-  }
-
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(40px, 7vw, 72px);
-    line-height: 1;
-    letter-spacing: 2px;
-    margin-bottom: 48px;
-    color: var(--white);
-  }
-
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-  }
-
-  .feature-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 20px;
-    padding: 28px;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-  .feature-card:hover {
-    border-color: rgba(168,224,99,0.25);
-    transform: translateY(-3px);
-  }
-
-  .feature-icon {
-    width: 48px; height: 48px;
-    background: rgba(168,224,99,0.1);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    margin-bottom: 16px;
-  }
-
-  .feature-title {
-    font-weight: 600;
-    font-size: 17px;
-    margin-bottom: 8px;
-    color: var(--white);
-  }
-
-  .feature-desc {
-    font-size: 14px;
-    color: var(--gray);
-    line-height: 1.6;
-    font-weight: 300;
-  }
-
-  /* ─── ROLES SECTION ─── */
-  .roles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-  }
-
-  .role-card {
-    background: var(--green-dark);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 24px;
-    padding: 36px 28px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s;
-  }
-  .role-card:hover { transform: translateY(-4px); }
-
-  .role-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--lime);
-  }
-
-  .role-emoji {
-    font-size: 40px;
-    margin-bottom: 16px;
-    display: block;
-  }
-
-  .role-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 32px;
-    letter-spacing: 2px;
-    color: var(--white);
-    margin-bottom: 8px;
-  }
-
-  .role-desc {
-    font-size: 14px;
-    color: var(--gray);
-    line-height: 1.6;
-    margin-bottom: 20px;
-    font-weight: 300;
-  }
-
-  .role-features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .role-features li {
-    font-size: 13px;
-    color: var(--off-white);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .role-features li::before {
-    content: '→';
-    color: var(--lime);
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  /* ─── STATS ─── */
-  .stats-bar {
-    background: var(--green-dark);
-    border-top: 1px solid rgba(255,255,255,0.06);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    padding: 48px 24px;
-  }
-
-  .stats-inner {
-    max-width: 900px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 32px;
-    text-align: center;
-  }
-
-  .stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 56px;
-    letter-spacing: 2px;
-    color: var(--lime);
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-size: 13px;
-    color: var(--gray);
-    margin-top: 6px;
-    font-weight: 400;
-    letter-spacing: 0.5px;
-  }
-
-  /* ─── CTA SECTION ─── */
-  .cta-section {
-    padding: 100px 24px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .cta-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(26,92,56,0.6) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .cta-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(48px, 9vw, 96px);
-    line-height: 0.95;
-    letter-spacing: 3px;
-    margin-bottom: 24px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .cta-title em {
-    font-style: normal;
-    color: var(--lime);
-  }
-
-  .cta-sub {
-    font-size: 17px;
-    color: var(--gray);
-    max-width: 440px;
-    margin: 0 auto 40px;
-    line-height: 1.6;
-    font-weight: 300;
-    position: relative;
-    z-index: 1;
-  }
-
-  .cta-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 32px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: gap;
-    gap: 16px;
-  }
-
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 2px;
-    color: var(--gray);
-  }
-
-  .footer-note {
-    font-size: 13px;
-    color: var(--gray);
-    opacity: 0.6;
-  }
-
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ─── DIVIDER ─── */
-  .pitch-divider {
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(168,224,99,0.3), transparent);
-    margin: 0;
-  }
-
-  /* ─── MOBILE ─── */
-  @media (max-width: 640px) {
-    nav { padding: 16px 20px; }
-    .hero { padding: 100px 20px 60px; }
-    footer { flex-direction: column; text-align: center; padding: 24px 20px; }
-    .features-grid { grid-template-columns: 1fr; }
-    .roles-grid { grid-template-columns: 1fr; }
-  }
-</style>
+    @media (max-width: 480px) {
+      .stat { min-width: 140px; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">
-    <img src="https://media.base44.com/images/public/69d770b07a1bdc0722bc8fef/766985b42_F7D88EE2-D3CD-441E-8C34-8D3D7D4CCDD0.png" alt="Veld" style="height:40px;width:auto;">
-  </a>
-  <a href="https://veld-field-pro.base44.app" class="nav-cta" target="_blank">Get Started →</a>
-</nav>
+  <!-- NAV -->
+  <nav>
+    <img src="https://media.base44.com/images/public/69d770b07a1bdc0722bc8fef/766985b42_F7D88EE2-D3CD-441E-8C34-8D3D7D4CCDD0.png" alt="Veld" />
+    <a class="btn-nav" href="https://veld-field-pro.base44.app">Get Started →</a>
+  </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <!-- Pitch SVG background -->
-  <svg class="pitch-svg" viewBox="0 0 560 780" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="2" y="2" width="556" height="776" stroke="white" stroke-width="3"/>
-    <line x1="2" y1="390" x2="558" y2="390" stroke="white" stroke-width="2"/>
-    <circle cx="280" cy="390" r="60" stroke="white" stroke-width="2"/>
-    <circle cx="280" cy="390" r="2" fill="white"/>
-    <rect x="2" y="2" width="556" height="134" stroke="white" stroke-width="2"/>
-    <rect x="2" y="644" width="556" height="134" stroke="white" stroke-width="2"/>
-    <rect x="142" y="2" width="276" height="46" stroke="white" stroke-width="2"/>
-    <rect x="142" y="732" width="276" height="46" stroke="white" stroke-width="2"/>
-    <circle cx="280" cy="104" r="4" fill="white"/>
-    <circle cx="280" cy="676" r="4" fill="white"/>
-    <path d="M220 2 Q280 80 340 2" stroke="white" stroke-width="2" fill="none"/>
-    <path d="M220 778 Q280 700 340 778" stroke="white" stroke-width="2" fill="none"/>
-    <rect x="232" y="0" width="96" height="8" stroke="white" stroke-width="2"/>
-    <rect x="232" y="772" width="96" height="8" stroke="white" stroke-width="2"/>
-  </svg>
+  <!-- HERO -->
+  <section class="hero">
+    <img class="hero-logo" src="https://media.base44.com/images/public/69d770b07a1bdc0722bc8fef/766985b42_F7D88EE2-D3CD-441E-8C34-8D3D7D4CCDD0.png" alt="Veld" />
+    <h1>THE FIELD<br /><span>HOCKEY</span><br />PLATFORM</h1>
+    <p class="hero-sub">Connect with clubs, manage your squad, track stats, and find opportunities — all in one place built for the game.</p>
+    <a class="btn-primary" href="https://veld-field-pro.base44.app">Join Veld — It's Free</a>
+    <p class="hero-tagline">Join players, coaches and clubs from around the world</p>
+  </section>
 
-  <!-- Hero logo -->
-  <div style="margin-bottom: 28px; animation: fadeUp 0.8s 0.05s ease both;">
-    <img src="https://media.base44.com/images/public/69d770b07a1bdc0722bc8fef/766985b42_F7D88EE2-D3CD-441E-8C34-8D3D7D4CCDD0.png" alt="Veld" style="height:90px;width:auto;">
+  <!-- PILLS -->
+  <div class="pills">
+    <div class="pill">🏃 Players</div>
+    <div class="pill">📋 Coaches</div>
+    <div class="pill">🏟️ Clubs</div>
+    <div class="pill">🌍 30+ Countries</div>
+    <div class="pill">🏑 Field Hockey Only</div>
+    <div class="pill">📱 Mobile & Desktop</div>
   </div>
-    THE FIELD<br>
-    <span>HOCKEY</span><br>
-    PLATFORM
-  </h1>
 
-  <p class="hero-sub">
-    Connect with clubs, manage your squad, track stats, and find opportunities — all in one place built for the game.
-  </p>
-
-  <div class="hero-actions">
-    <a href="https://veld-field-pro.base44.app" class="btn-primary" target="_blank">
-      Join Veld — It's Free
-    </a>
-    <p class="hero-note">Join players, coaches and clubs from around the world</p>
-  </div>
-</section>
-
-<!-- ROLES PILLS -->
-<div class="roles-strip">
-  <div class="role-pill"><span>🏃</span> Players</div>
-  <div class="role-pill"><span>📋</span> Coaches</div>
-  <div class="role-pill"><span>🏟️</span> Clubs</div>
-  <div class="role-pill"><span>🌍</span> 30+ Countries</div>
-  <div class="role-pill"><span>🏑</span> Field Hockey Only</div>
-  <div class="role-pill"><span>📱</span> Mobile & Desktop</div>
-</div>
-
-<div class="pitch-divider"></div>
-
-<!-- FEATURES -->
-<div class="section reveal">
-  <p class="section-label">What Veld Does</p>
-  <h2 class="section-title">EVERYTHING<br>ON THE PITCH</h2>
-
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon">🔄</div>
-      <div class="feature-title">Rotation Manager</div>
-      <div class="feature-desc">Visual hockey pitch with live timer. Plan substitutions, break rotations, track minutes played — all during the match.</div>
+  <!-- FEATURES -->
+  <section class="features">
+    <h2 class="section-label">EVERYTHING ON <em>THE PITCH</em></h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">🔄</div>
+        <h3>Rotation Manager</h3>
+        <p>Visual hockey pitch with live timer. Plan substitutions, break rotations, track minutes played — all during the match.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📢</div>
+        <h3>Convocation System</h3>
+        <p>Send match selections with explanations. Players confirm availability directly from the app. No more WhatsApp chaos.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌍</div>
+        <h3>Global Marketplace</h3>
+        <p>Players find clubs. Coaches find jobs. Clubs recruit talent. Search by country, position, level, and age category worldwide.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Player Stats</h3>
+        <p>Goals, assists, cards, and minutes tracked every match. Build your career profile with verified stats history.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎥</div>
+        <h3>Video Analysis</h3>
+        <p>Coaches add timestamped annotations to match video. Players get notified and watch exactly their moments.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Live Match</h3>
+        <p>Track goals, cards, penalty corners, and shots in real time. Full match report saved automatically at the end.</p>
+      </div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">📢</div>
-      <div class="feature-title">Convocation System</div>
-      <div class="feature-desc">Send match selections with explanations. Players confirm availability directly from the app. No more WhatsApp chaos.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🌍</div>
-      <div class="feature-title">Global Marketplace</div>
-      <div class="feature-desc">Players find clubs. Coaches find jobs. Clubs recruit talent. Search by country, position, level, and age category worldwide.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">📊</div>
-      <div class="feature-title">Player Stats</div>
-      <div class="feature-desc">Goals, assists, cards, and minutes tracked every match. Build your career profile with verified stats history.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🎥</div>
-      <div class="feature-title">Video Analysis</div>
-      <div class="feature-desc">Coaches add timestamped annotations to match video. Players get notified and watch exactly their moments.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">⚡</div>
-      <div class="feature-title">Live Match</div>
-      <div class="feature-desc">Track goals, cards, penalty corners, and shots in real time. Full match report saved automatically at the end.</div>
-    </div>
-  </div>
-</div>
+  </section>
 
-<div class="pitch-divider"></div>
-
-<!-- STATS -->
-<div class="stats-bar reveal">
-  <div class="stats-inner">
-    <div>
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
       <div class="stat-num">3M+</div>
       <div class="stat-label">Field hockey players worldwide</div>
     </div>
-    <div>
+    <div class="stat">
       <div class="stat-num">3</div>
       <div class="stat-label">Languages — EN · ES · NL</div>
     </div>
-    <div>
+    <div class="stat">
       <div class="stat-num">0</div>
       <div class="stat-label">Apps that do all this for hockey</div>
     </div>
-    <div>
+    <div class="stat">
       <div class="stat-num">Free</div>
       <div class="stat-label">For every player on the platform</div>
     </div>
   </div>
-</div>
 
-<!-- ROLES -->
-<div class="section reveal">
-  <p class="section-label">Built For Everyone</p>
-  <h2 class="section-title">PICK YOUR<br>POSITION</h2>
-
-  <div class="roles-grid">
-    <div class="role-card">
-      <span class="role-emoji">🏃</span>
-      <div class="role-name">Player</div>
-      <div class="role-desc">Build your profile, track your career, and get discovered by clubs around the world.</div>
-      <ul class="role-features">
-        <li>Personal stats and career history</li>
-        <li>Global marketplace visibility</li>
-        <li>Receive convocations in-app</li>
-        <li>Watch your video analysis moments</li>
-        <li>Free profile — always</li>
-      </ul>
+  <!-- ROLES -->
+  <section class="roles">
+    <h2 class="section-label">PICK YOUR <em>POSITION</em></h2>
+    <div class="roles-grid">
+      <div class="role-card">
+        <div class="role-icon">🏃</div>
+        <h3>Player</h3>
+        <ul>
+          <li>Personal stats and career history</li>
+          <li>Global marketplace visibility</li>
+          <li>Receive convocations in-app</li>
+          <li>Watch your video analysis moments</li>
+        </ul>
+        <span class="badge-free">Free — always</span>
+      </div>
+      <div class="role-card">
+        <div class="role-icon">📋</div>
+        <h3>Coach</h3>
+        <ul>
+          <li>Visual rotation board during match</li>
+          <li>Squad management and convocations</li>
+          <li>Video analysis with player tagging</li>
+          <li>Training session planning</li>
+          <li>Find coaching opportunities globally</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <div class="role-icon">🏟️</div>
+        <h3>Club</h3>
+        <ul>
+          <li>Manage all teams and coaches</li>
+          <li>Post recruitment opportunities</li>
+          <li>Publish club news for all members</li>
+          <li>Organisation structure overview</li>
+          <li>Tailored plan based on club size</li>
+        </ul>
+      </div>
     </div>
-    <div class="role-card">
-      <span class="role-emoji">📋</span>
-      <div class="role-name">Coach</div>
-      <div class="role-desc">Manage your squad with professional tools. From first training to final whistle.</div>
-      <ul class="role-features">
-        <li>Visual rotation board during match</li>
-        <li>Squad management and convocations</li>
-        <li>Video analysis with player tagging</li>
-        <li>Training session planning</li>
-        <li>Find coaching opportunities globally</li>
-      </ul>
-    </div>
-    <div class="role-card">
-      <span class="role-emoji">🏟️</span>
-      <div class="role-name">Club</div>
-      <div class="role-desc">Run your entire club from one platform. Recruit, communicate, and grow.</div>
-      <ul class="role-features">
-        <li>Manage all teams and coaches</li>
-        <li>Post recruitment opportunities</li>
-        <li>Publish club news for all members</li>
-        <li>Organisation structure overview</li>
-        <li>Tailored plan based on club size</li>
-      </ul>
-    </div>
-  </div>
-</div>
+  </section>
 
-<div class="pitch-divider"></div>
+  <!-- CTA -->
+  <section class="cta">
+    <h2>YOUR GAME.<br /><em>YOUR PLATFORM.</em><br />YOUR VELD.</h2>
+    <p>Join players, coaches, and clubs from across the world on the only platform built specifically for field hockey.</p>
+    <a class="btn-primary" href="https://veld-field-pro.base44.app">Join Veld Now — It's Free</a>
+    <p class="cta-note">No credit card required · Set up in 2 minutes</p>
+  </section>
 
-<!-- CTA FINAL -->
-<section class="cta-section reveal">
-  <h2 class="cta-title">
-    YOUR GAME.<br>
-    <em>YOUR PLATFORM.</em><br>
-    YOUR VELD.
-  </h2>
-  <p class="cta-sub">
-    Join players, coaches, and clubs from across the world on the only platform built specifically for field hockey.
-  </p>
-  <div class="cta-actions">
-    <a href="https://veld-field-pro.base44.app" class="btn-primary" target="_blank">
-      Join Veld Now — It's Free
-    </a>
-    <p class="hero-note">No credit card required · Set up in 2 minutes</p>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">
-    <img src="https://media.base44.com/images/public/69d770b07a1bdc0722bc8fef/766985b42_F7D88EE2-D3CD-441E-8C34-8D3D7D4CCDD0.png" alt="Veld" style="height:28px;width:auto;opacity:0.7;">
-  </div>
-  <div class="footer-note">veld-hockey.com · The global field hockey platform · 2026</div>
-  <div class="footer-note">Built for the pitch 🏑</div>
-</footer>
-
-<script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
-</script>
+  <!-- FOOTER -->
+  <footer>
+    <img src="https://media.base44.com/images/public/69d770b07a1bdc0722bc8fef/766985b42_F7D88EE2-D3CD-441E-8C34-8D3D7D4CCDD0.png" alt="Veld" />
+    <p>veld-hockey.com · The global field hockey platform · 2026</p>
+    <p>Built for the pitch 🏑</p>
+  </footer>
 
 </body>
 </html>
