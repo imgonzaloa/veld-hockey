@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Veld — The Global Field Hockey Platform</title>
+  <meta name="description" content="Connect with clubs, manage your squad, track stats, and find opportunities — all in one place built for field hockey." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a1a0f; --bg2: #0d2014; --green: #a8f060; --green-dim: #6db83a;
+      --text: #e8f5e0; --muted: #7a9e7a; --card: #0f2416; --border: rgba(168,240,96,0.12);
+    }
+    html { scroll-behavior: smooth; }
+    body { background-color: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: rgba(10,26,15,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    nav img { height: 28px; width: auto; }
+    .btn-nav { background: var(--green); color: #0a1a0f; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; padding: 10px 20px; border-radius: 100px; transition: opacity 0.2s; cursor: pointer; border: none; }
+    .btn-nav:hover { opacity: 0.85; }
+
+    .hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 80px 24px 60px; }
+    .hero img { height: 64px; width: auto; margin-bottom: 32px; }
+    .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 14vw, 100px); line-height: 0.95; letter-spacing: 0.02em; color: var(--text); margin-bottom: 8px; }
+    .hero h1 span { color: var(--green); }
+    .hero-sub { font-size: clamp(15px, 3vw, 18px); color: var(--muted); max-width: 520px; margin: 20px auto 36px; }
+    .btn-primary { display: inline-block; background: var(--green); color: #0a1a0f; font-weight: 700; font-size: 16px; padding: 16px 36px; border-radius: 100px; transition: transform 0.2s, opacity 0.2s; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; }
+    .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+    .hero-tagline { margin-top: 16px; font-size: 13px; color: var(--muted); }
+
+    .pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 0 24px 64px; }
+    .pill { background: var(--card); border: 1px solid var(--border); border-radius: 100px; padding: 10px 20px; font-size: 14px; font-weight: 500; }
+
+    .section-label { text-align: center; font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 8vw, 64px); letter-spacing: 0.04em; color: var(--text); padding: 0 24px; margin-bottom: 48px; }
+    .section-label em { font-style: normal; color: var(--green); }
+
+    .features { padding: 72px 24px; background: var(--bg2); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1080px; margin: 0 auto; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px; transition: border-color 0.2s, transform 0.2s; }
+    .card:hover { border-color: var(--green-dim); transform: translateY(-3px); }
+    .card-icon { font-size: 28px; margin-bottom: 12px; }
+    .card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.04em; color: var(--green); margin-bottom: 8px; }
+    .card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    .stats { display: flex; flex-wrap: wrap; justify-content: center; padding: 56px 24px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stat { flex: 1; min-width: 160px; text-align: center; padding: 24px 16px; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: var(--green); line-height: 1; }
+    .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    .pricing { padding: 72px 24px; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 960px; margin: 0 auto; }
+    .price-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 32px 24px; position: relative; }
+    .price-card.featured { border: 2px solid var(--green); }
+    .price-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--green); color: #0a1a0f; font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 100px; white-space: nowrap; }
+    .price-icon { font-size: 32px; margin-bottom: 12px; }
+    .price-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.04em; color: var(--text); margin-bottom: 4px; }
+    .price-amount { font-size: 36px; font-weight: 700; color: var(--green); line-height: 1; margin-bottom: 4px; }
+    .price-amount span { font-size: 16px; font-weight: 400; color: var(--muted); }
+    .price-sub { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+    .price-card ul { list-style: none; margin-bottom: 24px; }
+    .price-card ul li { font-size: 13px; color: var(--muted); padding: 5px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+    .price-card ul li::before { content: '→'; color: var(--green); font-size: 12px; }
+    .price-card ul li:last-child { border-bottom: none; }
+    .trial-badge { display: inline-block; background: rgba(168,240,96,0.12); color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border); margin-bottom: 16px; }
+    .btn-outline { display: block; width: 100%; background: transparent; color: var(--green); font-weight: 700; font-size: 14px; padding: 12px; border-radius: 12px; border: 1px solid var(--green); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; text-align: center; margin-top: 8px; }
+    .btn-outline:hover { background: rgba(168,240,96,0.1); }
+    .btn-full { display: block; width: 100%; background: var(--green); color: #0a1a0f; font-weight: 700; font-size: 14px; padding: 12px; border-radius: 12px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.2s; text-align: center; margin-top: 8px; }
+    .btn-full:hover { opacity: 0.9; }
+    .also-player { background: rgba(168,240,96,0.06); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+    .also-player strong { color: var(--green); }
+    .mkt-divider { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+    .cta { text-align: center; padding: 80px 24px; background: var(--bg2); }
+    .cta h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 8vw, 72px); line-height: 1; letter-spacing: 0.04em; margin-bottom: 12px; }
+    .cta h2 em { font-style: italic; color: var(--green); }
+    .cta p { color: var(--muted); font-size: 15px; margin-bottom: 32px; }
+    .cta-note { margin-top: 16px; font-size: 12px; color: var(--muted); }
+
+    footer { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 32px 24px; border-top: 1px solid var(--border); text-align: center; }
+    footer img { height: 20px; opacity: 0.6; }
+    footer p { font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <img src="https://media.base44.com/images/public/69d770b07a1bdc0722bc8fef/766985b42_F7D88EE2-D3CD-441E-8C34-8D3D7D4CCDD0.png" alt="Veld" />
+    <a class="btn-nav" href="https://veld-field-pro.base44.app">Get Started →</a>
+  </nav>
+
+  <section class="hero">
+    <img src="https://media.base44.com/images/public/69d770b07a1bdc0722bc8fef/766985b42_F7D88EE2-D3CD-441E-8C34-8D3D7D4CCDD0.png" alt="Veld" />
+    <h1>THE FIELD<br /><span>HOCKEY</span><br />PLATFORM</h1>
+    <p class="hero-sub">Connect with clubs, manage your squad, track stats, and find opportunities — all in one place built for the game.</p>
+    <a class="btn-primary" href="https://veld-field-pro.base44.app">Join Veld — It's Free</a>
+    <p class="hero-tagline">Join players, coaches and clubs from around the world</p>
+  </section>
+
+  <div class="pills">
+    <div class="pill">🏃 Players</div>
+    <div class="pill">📋 Coaches</div>
+    <div class="pill">🏟️ Clubs</div>
+    <div class="pill">🌍 30+ Countries</div>
+    <div class="pill">🏑 Field Hockey Only</div>
+    <div class="pill">📱 Mobile & Desktop</div>
+  </div>
+
+  <section class="features">
+    <h2 class="section-label">EVERYTHING ON <em>THE PITCH</em></h2>
+    <div class="grid">
+      <div class="card"><div class="card-icon">🔄</div><h3>Rotation Manager</h3><p>Visual hockey pitch with live timer. Plan substitutions, break rotations, track minutes played — all during the match.</p></div>
+      <div class="card"><div class="card-icon">📢</div><h3>Convocation System</h3><p>Send match selections with explanations. Players confirm availability directly from the app. No more WhatsApp chaos.</p></div>
+      <div class="card"><div class="card-icon">🌍</div><h3>Global Marketplace</h3><p>Players find clubs. Coaches find jobs. Clubs recruit talent. Search by country, position, level, and age category worldwide.</p></div>
+      <div class="card"><div class="card-icon">📊</div><h3>Player Stats</h3><p>Goals, assists, cards, and minutes tracked every match. Build your career profile with verified stats history.</p></div>
+      <div class="card"><div class="card-icon">🎥</div><h3>Video Analysis</h3><p>Coaches add timestamped annotations to match video. Players get notified and watch exactly their moments.</p></div>
+      <div class="card"><div class="card-icon">⚡</div><h3>Live Match</h3><p>Track goals, cards, penalty corners, and shots in real time. Full match report saved automatically at the end.</p></div>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">3M+</div><div class="stat-label">Field hockey players worldwide</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">Languages — EN · ES · NL</div></div>
+    <div class="stat"><div class="stat-num">0</div><div class="stat-label">Other apps built for field hockey</div></div>
+    <div class="stat"><div class="stat-num">30+</div><div class="stat-label">Countries on the platform</div></div>
+  </div>
+
+  <section class="pricing">
+    <h2 class="section-label">PICK YOUR <em>POSITION</em></h2>
+    <div class="pricing-grid">
+
+      <div class="price-card">
+        <div class="price-icon">🏃</div>
+        <h3>Player</h3>
+        <div class="price-amount">Free</div>
+        <p class="price-sub">Always free to join and play</p>
+        <ul>
+          <li>Public profile</li>
+          <li>Team membership via invite</li>
+          <li>Convocation responses</li>
+          <li>Personal match stats</li>
+          <li>Video analysis moments</li>
+        </ul>
+        <a class="btn-full" href="https://veld-field-pro.base44.app">Get Started Free</a>
+        <div class="mkt-divider">
+          <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">Want to appear in the Marketplace?</p>
+          <div class="price-amount" style="font-size:22px;">€2.99<span>/month</span></div>
+          <a class="btn-outline" href="https://buy.stripe.com/dRm00l66k2jDg97b4kbII03">Add Marketplace Access</a>
+          <p style="font-size:11px;color:var(--muted);margin-top:8px;">Already included if you subscribe to the Coach plan</p>
+        </div>
+      </div>
+
+      <div class="price-card featured">
+        <div class="price-badge">⭐ Most Popular</div>
+        <div class="price-icon">📋</div>
+        <h3>Coach</h3>
+        <div class="trial-badge">🎁 7-day free trial</div>
+        <div class="price-amount">€12.99<span>/month</span></div>
+        <p class="price-sub">or €89.99/year · Save 42%</p>
+        <div class="also-player">🏃 <strong>Also a player?</strong> Coach plan includes marketplace access as both coach and player — no extra cost.</div>
+        <ul>
+          <li>Visual rotation board during match</li>
+          <li>Squad management & convocations</li>
+          <li>Video analysis with player tagging</li>
+          <li>Training session planning</li>
+          <li>Live match stats</li>
+          <li>Marketplace as coach + player</li>
+        </ul>
+        <a class="btn-full" href="https://buy.stripe.com/aFadRb66kbUdbSRc8obII00">Start Free Trial — Monthly</a>
+        <a class="btn-outline" href="https://buy.stripe.com/eVq00l0M0cYhaON6O4bII01">Start Free Trial — Yearly · Save 42%</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-icon">🏟️</div>
+        <h3>Club</h3>
+        <div class="price-amount" style="font-size:24px;">Custom</div>
+        <p class="price-sub">Tailored to your club's size and needs</p>
+        <ul>
+          <li>All coach features for full club</li>
+          <li>All players get marketplace included</li>
+          <li>Organization management</li>
+          <li>Sporting Director access</li>
+          <li>Club news & events</li>
+          <li>Recruitment tools</li>
+        </ul>
+        <a class="btn-outline" href="mailto:imgonzaloa@gmail.com">Contact Us</a>
+        <p style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center;">We'll respond within 24 hours</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2>YOUR GAME.<br /><em>YOUR PLATFORM.</em><br />YOUR VELD.</h2>
+    <p>Join players, coaches, and clubs from across the world on the only platform built specifically for field hockey.</p>
+    <a class="btn-primary" href="https://veld-field-pro.base44.app">Join Veld Now — It's Free</a>
+    <p class="cta-note">No credit card required · Set up in 2 minutes</p>
+  </section>
+
+  <footer>
+    <img src="https://media.base44.com/images/public/69d770b07a1bdc0722bc8fef/766985b42_F7D88EE2-D3CD-441E-8C34-8D3D7D4CCDD0.png" alt="Veld" />
+    <p>veld-hockey.com · The global field hockey platform · 2026</p>
+    <p>Built for the pitch 🏑</p>
+  </footer>
+
+</body>
+</html>
