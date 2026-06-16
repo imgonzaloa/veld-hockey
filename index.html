@@ -12,7 +12,7 @@
 :root{
   --bg:#03070a;--bg2:#060e0a;--bg3:#0a1510;
   --green:#3fd972;--green-glow:rgba(63,217,114,0.13);--green-border:rgba(63,217,114,0.24);
-  --white:#e8f0e8;--muted:rgba(232,240,232,0.52);--faint:rgba(232,240,232,0.25);
+  --white:#e8f0e8;--muted:rgba(232,240,232,0.72);--faint:rgba(232,240,232,0.45);
   --line:rgba(232,240,232,0.06);--line2:rgba(232,240,232,0.11);
 }
 html{scroll-behavior:smooth;}
@@ -120,6 +120,7 @@ nav.scrolled{background:rgba(3,7,10,0.94);backdrop-filter:blur(24px);border-bott
 .plan-badge{position:absolute;top:-11px;left:1.85rem;background:var(--green);color:#03070a;font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.28rem .9rem;border-radius:100px;}
 .plan-name{font-size:1.1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.25rem;}
 .plan-for{font-size:.75rem;color:var(--faint);margin-bottom:1.35rem;line-height:1.4;min-height:2.2em;}
+.plan-for-visible{font-size:.82rem;font-weight:600;color:var(--white);margin-bottom:1.35rem;line-height:1.4;padding:.35rem .75rem;background:var(--green-glow);border:1px solid var(--green-border);border-radius:100px;display:inline-block;}
 .plan-sep{height:1px;background:var(--line);margin-bottom:1.25rem;}
 .plan-free{font-size:.82rem;color:var(--green);font-weight:600;margin-bottom:.25rem;}
 .plan-price{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.2rem;}
@@ -333,17 +334,17 @@ footer{border-top:1px solid var(--line);padding:2rem 2.75rem;display:flex;align-
   <div class="container">
     <div class="section-head reveal">
       <div class="eyebrow">Pricing</div>
-      <h2 class="sh">Start with the Marketplace.<br><em>Grow from there.</em></h2>
-      <p>Free for everyone during Beta. From July 2026, start with the Marketplace for €2.99 — or unlock the full Coach Pro toolkit. The Marketplace is always included in Coach Pro at no extra charge.</p>
+      <h2 class="sh">Simple plans.<br><em>Serious tools.</em></h2>
+      <p>Free during Beta. Transparent pricing from July 2026.</p>
     </div>
     <div class="plans">
       <div class="plan reveal">
         <div class="plan-name">Marketplace</div>
-        <div class="plan-for">For players, coaches &amp; clubs</div>
+        <div class="plan-for-visible">For players, coaches &amp; clubs</div>
         <div class="plan-sep"></div>
         <div class="plan-free">Free during Beta</div>
-        <div class="plan-price">€2.99<sub> /mo from July</sub></div>
-        <div class="plan-yr">Available for all roles</div>
+        <div class="plan-price">€2.99<sub> /mo</sub></div>
+        <div class="plan-yr">or <strong style="color:var(--green);">€24.99/year</strong> — <span class="save">save 30%</span></div>
         <ul class="plan-list">
           <li><span class="tick"></span>Global profile visible in 30+ countries</li>
           <li><span class="tick"></span>Connect with players, coaches &amp; clubs</li>
